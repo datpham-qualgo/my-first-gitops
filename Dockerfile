@@ -1,20 +1,20 @@
-# Sử dụng base image Node.js
+# 1. Dùng base image Node.js 18 (bản Alpine siêu nhẹ)
 FROM node:18-alpine
 
-# Tạo thư mục làm việc
+# 2. Tạo thư mục làm việc trong container
 WORKDIR /app
 
-# Copy package.json và package-lock.json (nếu có)
+# 3. Copy package.json ĐỂ build cache hiệu quả
 COPY package*.json ./
 
-# Cài đặt dependencies
+# 4. Cài đặt các gói phụ thuộc
 RUN npm install
 
-# Copy toàn bộ code ứng dụng
+# 5. Copy toàn bộ code (index.js) vào
 COPY . .
 
-# Mở cổng mà ứng dụng lắng nghe
+# 6. Mở cổng 8080 mà app đang chạy
 EXPOSE 8080
 
-# Chạy ứng dụng khi container khởi động
+# 7. Lệnh để chạy ứng dụng
 CMD ["node", "index.js"]
