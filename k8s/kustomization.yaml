@@ -13,9 +13,11 @@ resources:
   - hpa.yaml
   - pdb.yaml
 
-commonLabels:
-  app: my-website
-  managed-by: argocd
+# Remove commonLabels to avoid selector conflicts
+labels:
+  - includeSelectors: false
+    pairs:
+      managed-by: argocd
 
 images:
   - name: johnnyp013/my-first-gitops

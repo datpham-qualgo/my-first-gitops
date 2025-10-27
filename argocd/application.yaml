@@ -14,6 +14,10 @@ spec:
     repoURL: https://github.com/datpham-qualgo/my-first-gitops.git
     targetRevision: main
     path: k8s
+    # Don't use Kustomize, apply YAML files directly
+    directory:
+      recurse: true
+      exclude: "kustomization.yaml"
     
   destination:
     server: https://kubernetes.default.svc
@@ -28,6 +32,7 @@ spec:
       - CreateNamespace=true
       - PrunePropagationPolicy=foreground
       - PruneLast=true
+      - ApplyOutOfSyncOnly=true
     retry:
       limit: 5
       backoff:
