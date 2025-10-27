@@ -2,6 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: my-website
+  labels:
+    app: my-website
+    version: v1
 spec:
   replicas: 2
   selector:
@@ -11,18 +14,82 @@ spec:
     metadata:
       labels:
         app: my-website
+        version: v1
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
       containers:
       - name: web
-        # Dòng quan trọng: Trỏ đến image trên Docker Hub của bạn
-        # Bot sẽ tự động thay đổi ":latest" thành mã SHA (ví dụ: :a1b2c3d)
-        image: johnnyp013/my-first-gitops:latest
+        # Important line: Points to your image on Docker Hub
+        # Bot will automatically change ":latest" to SHA hash (e.g.: :a1b2c3d)
+        image: datpham-qualgo/my-first-gitops:latest
         
-        # Cổng 8080 (mà file index.js và Dockerfile của bạn đang dùng)
+        # Port 8080 (used by index.js and Dockerfile)
         ports:
-        - containerPort: 8080
+        - name: http
+          containerPort: 8080
+          protocol: TCP
         
-        # Vẫn giữ nguyên phần "tiêm" ConfigMap
+        # Resource limits and requests for better scheduling
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+        
+        # Health checks
+        livenessProbe:
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        
+        # Security context
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+        
+        # Environment variables from ConfigMap
         envFrom:
         - configMapRef:
             name: my-website-config
+        
+        # Volume mounts for logs and temp
+        volumeMounts:
+        - name: tmp-volume
+          mountPath: /tmp
+        - name: logs-volume
+          mountPath: /app/logs
+      
+      volumes:
+      - name: tmp-volume
+        emptyDir: {}
+      - name: logs-volume
+        emptyDir: {}
+      
+      # Deployment strategy
+      strategy:
+        type: RollingUpdate
+        rollingUpdate:
+          maxUnavailable: 1
+          maxSurge: 1

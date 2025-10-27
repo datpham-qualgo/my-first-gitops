@@ -1,0 +1,42 @@
+# Development Dockerfile with hot-reload and debugging capabilities
+FROM node:18-alpine
+
+# Install development tools
+RUN apk add --no-cache \
+    dumb-init \
+    curl \
+    bash \
+    && rm -rf /var/cache/apk/*
+
+# Create app directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install all dependencies (including dev dependencies)
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Create non-root user for development
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S devuser -u 1001 && \
+    chown -R devuser:nodejs /app
+
+# Switch to non-root user
+USER devuser
+
+# Expose ports (app + debugger)
+EXPOSE 8080 9229
+
+# Health check for development
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8080/ || exit 1
+
+# Use dumb-init for proper signal handling
+ENTRYPOINT ["dumb-init", "--"]
+
+# Start with nodemon for development (install globally if needed)
+CMD ["npm", "run", "dev"]

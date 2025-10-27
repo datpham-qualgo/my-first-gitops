@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # Production build
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - MY_MESSAGE=Hello from Docker Compose!
+      - ANOTHER_VAR=Running in containerized environment
+    healthcheck:
+      test: ["CMD", "node", "-e", "const http = require('http'); const options = { hostname: 'localhost', port: 8080, path: '/', timeout: 2000 }; const req = http.request(options, (res) => { process.exit(res.statusCode === 200 ? 0 : 1); }); req.on('error', () => process.exit(1)); req.on('timeout', () => process.exit(1)); req.end();"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+
+  # Development build with hot-reload
+  app-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8081:8080"
+      - "9229:9229"  # Debug port
+    environment:
+      - NODE_ENV=development
+      - MY_MESSAGE=Hello from Development Environment!
+      - ANOTHER_VAR=Development mode with hot-reload
+    volumes:
+      - .:/app
+      - /app/node_modules  # Preserve node_modules in container
+    profiles:
+      - dev

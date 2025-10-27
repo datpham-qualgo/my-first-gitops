@@ -4,9 +4,30 @@
   "description": "My simple GitOps website",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "dev:debug": "node --inspect=0.0.0.0:9229 --watch index.js",
+    "docker:build": "docker build -t my-website .",
+    "docker:build:dev": "docker build -f Dockerfile.dev -t my-website:dev .",
+    "docker:run": "docker run -p 8080:8080 my-website",
+    "docker:run:dev": "docker run -p 8080:8080 -p 9229:9229 -v $(pwd):/app my-website:dev"
   },
   "dependencies": {
+    "dotenv": "^16.6.1",
     "express": "^4.18.2"
-  }
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "docker",
+    "kubernetes",
+    "gitops",
+    "ci-cd"
+  ],
+  "author": "datpham-qualgo",
+  "license": "MIT"
 }

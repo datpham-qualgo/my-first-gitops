@@ -1,0 +1,11 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: my-website-pdb
+  labels:
+    app: my-website
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: my-website
