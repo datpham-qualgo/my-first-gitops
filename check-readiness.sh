@@ -33,7 +33,7 @@ done
 # Kiểm tra Docker Hub image name
 echo ""
 echo "🐳 Kiểm tra Docker Hub image name..."
-if grep -q "datpham-qualgo/my-first-gitops" k8s/deployment.yaml; then
+if grep -q "johnnyp013/my-first-gitops" k8s/deployment.yaml; then
     echo "✅ Docker Hub image name - OK"
 else
     echo "❌ Docker Hub image name - INCORRECT"
@@ -99,7 +99,7 @@ echo ""
 echo "🎉 Tất cả kiểm tra đã hoàn thành!"
 echo ""
 echo "📋 Production-ready checklist:"
-echo "[ ] Đã tạo Docker Hub repository: datpham-qualgo/my-first-gitops"
+echo "[ ] Đã tạo Docker Hub repository: johnnyp013/my-first-gitops"
 echo "[ ] Đã thiết lập GitHub Secrets: DOCKER_USERNAME, DOCKER_PASSWORD"
 echo "[ ] Kubernetes cluster đã sẵn sàng với metrics-server (cho HPA)"
 echo "[ ] Argo CD đã được cài đặt và cấu hình"

@@ -16,7 +16,7 @@ permissions:
 
 env:
   # Docker Hub image name
-  IMAGE_NAME: datpham-qualgo/my-first-gitops
+  IMAGE_NAME: johnnyp013/my-first-gitops
   
   # Kubernetes manifest file path
   MANIFEST_PATH: k8s/deployment.yaml
