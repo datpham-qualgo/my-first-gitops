@@ -25,7 +25,7 @@ spec:
       - name: web
         # Important line: Points to your image on Docker Hub
         # Bot will automatically change ":latest" to SHA hash (e.g.: :a1b2c3d)
-        image: johnnyp013/my-first-gitops:main-4b22961
+        image: johnnyp013/my-first-gitops:main-53e0dbb
         
         # Port 8080 (used by index.js and Dockerfile)
         ports:
