@@ -14,7 +14,12 @@ spec:
     spec:
       containers:
       - name: web
-        # Đây là một image demo "Hello World" rất nhẹ
-        image: nginxdemos/hello
+        # BƯỚC 1: Đổi sang image mới
+        image: mendhak/http-https-echo
         ports:
-        - containerPort: 80
+        # BƯỚC 2: Đổi cổng (port) của container
+        - containerPort: 8080
+        # BƯỚC 3: "Tiêm" các biến từ ConfigMap
+        envFrom:
+        - configMapRef:
+            name: my-website-config
