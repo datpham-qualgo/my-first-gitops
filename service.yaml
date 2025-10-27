@@ -3,12 +3,11 @@ kind: Service
 metadata:
   name: my-website-svc
 spec:
-  # Dòng bạn cần thêm vào:
   type: NodePort 
-  # ---------------------
   selector:
     app: my-website
   ports:
   - protocol: TCP
     port: 80
-    targetPort: 80
+    # BƯỚC 4: Sửa cổng đích (targetPort)
+    targetPort: 8080
