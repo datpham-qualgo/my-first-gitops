@@ -3,7 +3,7 @@ kind: Kustomization
 
 namespace: demo-app-dev
 
-bases:
+resources:
   - ../../base
 
 namePrefix: dev-

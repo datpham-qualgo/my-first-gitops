@@ -89,12 +89,14 @@ case $choice in
     4)
         echo -e "${YELLOW}Installing ArgoCD...${NC}"
         kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -
-        kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+        kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.9.3/manifests/install.yaml
         echo ""
         echo -e "${GREEN}✓ ArgoCD installed!${NC}"
         echo ""
         echo "Get the initial admin password:"
         echo "  kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath=\"{.data.password}\" | base64 -d; echo"
+        echo ""
+        echo -e "${YELLOW}Important: Change the default admin password after first login!${NC}"
         echo ""
         echo "Access ArgoCD UI:"
         echo "  kubectl port-forward svc/argocd-server -n argocd 8080:443"

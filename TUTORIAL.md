@@ -153,7 +153,7 @@ curl http://localhost:8080
    kind: Kustomization
    
    namespace: demo-app-dev
-   bases:
+   resources:
      - ../../base
    
    namePrefix: dev-
@@ -180,7 +180,8 @@ curl http://localhost:8080
 1. **Install ArgoCD**
    ```bash
    kubectl create namespace argocd
-   kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+   # Use a specific version for reproducibility and security
+   kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.9.3/manifests/install.yaml
    ```
 
 2. **Get ArgoCD admin password**
@@ -188,6 +189,8 @@ curl http://localhost:8080
    kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
    echo
    ```
+   
+   **Security Note:** Change the default admin password immediately after first login!
 
 3. **Access ArgoCD UI**
    ```bash

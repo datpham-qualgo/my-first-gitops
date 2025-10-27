@@ -36,9 +36,10 @@ kustomize-prod: ## Build production overlay with Kustomize
 install-argocd: ## Install ArgoCD in the cluster
 	@echo "Installing ArgoCD..."
 	@kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -
-	@kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+	@kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.9.3/manifests/install.yaml
 	@echo "✓ ArgoCD installed"
 	@echo "Get admin password with: kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath=\"{.data.password}\" | base64 -d"
+	@echo "⚠️  Remember to change the default admin password after first login!"
 
 apply-dev: ## Apply dev manifests to cluster
 	@echo "Applying dev manifests..."

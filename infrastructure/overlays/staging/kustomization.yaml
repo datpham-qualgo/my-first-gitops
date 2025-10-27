@@ -3,7 +3,7 @@ kind: Kustomization
 
 namespace: demo-app-staging
 
-bases:
+resources:
   - ../../base
 
 namePrefix: staging-
