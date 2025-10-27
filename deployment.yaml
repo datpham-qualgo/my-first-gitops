@@ -14,12 +14,15 @@ spec:
     spec:
       containers:
       - name: web
-        # BƯỚC 1: Đổi sang image mới
-        image: mendhak/http-https-echo
+        # Dòng quan trọng: Trỏ đến image trên Docker Hub của bạn
+        # Bot sẽ tự động thay đổi ":latest" thành mã SHA (ví dụ: :a1b2c3d)
+        image: johnnyp013/my-first-gitops:latest
+        
+        # Cổng 8080 (mà file index.js và Dockerfile của bạn đang dùng)
         ports:
-        # BƯỚC 2: Đổi cổng (port) của container
         - containerPort: 8080
-        # BƯỚC 3: "Tiêm" các biến từ ConfigMap
+        
+        # Vẫn giữ nguyên phần "tiêm" ConfigMap
         envFrom:
         - configMapRef:
             name: my-website-config
