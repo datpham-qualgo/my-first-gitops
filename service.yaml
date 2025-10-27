@@ -3,11 +3,12 @@ kind: Service
 metadata:
   name: my-website-svc
 spec:
+  # Giữ nguyên NodePort để truy cập từ bên ngoài
   type: NodePort 
   selector:
     app: my-website
   ports:
   - protocol: TCP
     port: 80
-    # BƯỚC 4: Sửa cổng đích (targetPort)
+    # Sửa cổng này thành 8080 (cổng của container)
     targetPort: 8080
