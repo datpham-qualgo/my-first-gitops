@@ -3,6 +3,9 @@ kind: Service
 metadata:
   name: my-website-svc
 spec:
+  # Dòng bạn cần thêm vào:
+  type: NodePort 
+  # ---------------------
   selector:
     app: my-website
   ports:
