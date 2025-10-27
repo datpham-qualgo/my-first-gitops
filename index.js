@@ -1,30 +1,36 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 8080;
+const port = 8080; // Phải khớp với Dockerfile và Deployment
+
+// Lấy biến môi trường từ ConfigMap
+const message = process.env.MY_MESSAGE || "Không tìm thấy thông điệp!";
+const otherVar = process.env.ANOTHER_VAR || "Không có biến khác.";
 
 app.get('/', (req, res) => {
+  // Tạo một trang HTML đơn giản
   let html = `
     <!DOCTYPE html>
-    <html lang="en">
+    <html lang="vi">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>My Awesome GitOps App</title>
+        <title>Trang Web GitOps</title>
         <style>
-            body { font-family: Arial, sans-serif; background-color: #f0f2f5; color: #333; margin: 0; padding: 20px; text-align: center; }
-            .container { background-color: #fff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); padding: 30px; max-width: 600px; margin: 40px auto; }
-            h1 { color: #007bff; margin-bottom: 20px; }
-            pre { background-color: #e9ecef; padding: 15px; border-radius: 5px; text-align: left; overflow-x: auto; }
-            .footer { margin-top: 30px; font-size: 0.9em; color: #6c757d; }
+            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; display: grid; place-items: center; min-height: 90vh; background-color: #f4f7f6; }
+            .container { background-color: #ffffff; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); padding: 40px; max-width: 600px; text-align: center; }
+            h1 { color: #2c3e50; }
+            .message-box { background-color: #e8f4fd; border: 1px solid #b8dcfd; border-radius: 8px; padding: 20px; margin-top: 20px; text-align: left; }
+            p { font-size: 1.1em; line-height: 1.6; }
+            code { background-color: #dfe6e9; padding: 3px 6px; border-radius: 4px; }
         </style>
     </head>
     <body>
         <div class="container">
-            <h1>Chào mừng đến với Ứng dụng GitOps của tôi!</h1>
-            <p>Đây là các biến môi trường được inject từ Kubernetes ConfigMap:</p>
-            <pre>${JSON.stringify(process.env, null, 2)}</pre>
-            <div class="footer">
-                <p>Được triển khai tự động bởi Argo CD trên K3s!</p>
+            <h1>🎉 Chào mừng đến với K3s & Argo CD! 🎉</h1>
+            <p>Ứng dụng này được deploy tự động 100% bằng GitOps.</p>
+            <div class="message-box">
+                <p>Thông điệp từ <code>ConfigMap</code>:</p>
+                <h3>${message}</h3>
+                <p><code>ANOTHER_VAR</code>: ${otherVar}</p>
             </div>
         </div>
     </body>
@@ -34,5 +40,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`);
+  console.log(`Ứng dụng đang lắng nghe trên cổng ${port}`);
 });
